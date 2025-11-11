@@ -1,0 +1,21 @@
+# Prometheus configuration for OpCon MCP Server
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'opcon-mcp-server'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          instance: 'opcon-mcp-server-1'
+          environment: 'production'
+
+  # Add more instances if you have multiple servers
+  # - job_name: 'opcon-mcp-server-staging'
+  #   static_configs:
+  #     - targets: ['staging-server:9090']
+  #       labels:
+  #         instance: 'opcon-mcp-server-staging'
+  #         environment: 'staging'
