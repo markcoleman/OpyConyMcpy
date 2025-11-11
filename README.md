@@ -5,6 +5,7 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server for int
 ## 📚 Documentation
 
 **[View Full Documentation](https://markcoleman.github.io/OpyConyMcpy/)** - Complete guide including:
+- [Quick Start Guide](https://markcoleman.github.io/OpyConyMcpy/QUICKSTART.html) - Get started in minutes
 - [Tool Reference](https://markcoleman.github.io/OpyConyMcpy/TOOL_REFERENCE.html) - All 257 available tools with detailed parameters
 - [Configuration Guide](https://markcoleman.github.io/OpyConyMcpy/CONFIGURATION.html) - Environment setup
 - [Integration Guide](https://markcoleman.github.io/OpyConyMcpy/INTEGRATION.html) - MCP client integration

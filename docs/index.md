@@ -9,6 +9,7 @@ Welcome to the OpCon MCP Server documentation. This server enables AI agents and
 
 ## Quick Links
 
+- [Quick Start Guide](QUICKSTART.md) - Get started in minutes
 - [Tool Reference](TOOL_REFERENCE.md) - Complete reference for all 257 available tools
 - [Configuration Guide](CONFIGURATION.md) - Environment variable configuration
 - [Integration Guide](INTEGRATION.md) - How to integrate with MCP clients
