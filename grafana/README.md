@@ -110,41 +110,28 @@ The included dashboard provides:
 
 ## Docker Compose Example
 
-For a quick setup with Docker, create a `docker-compose.yml`:
-
-```yaml
-version: '3.8'
-
-services:
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./grafana/prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - grafana-storage:/var/lib/grafana
-
-volumes:
-  grafana-storage:
-```
-
-Then run:
+For a quick setup with Docker, a `docker-compose.yml` file is provided in the root directory:
 
 ```bash
+# Start Prometheus and Grafana
 docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
 ```
 
-Access Grafana at `http://localhost:3000` (default credentials: admin/admin)
+This will start:
+- **Prometheus** on http://localhost:9091 (scraping metrics from localhost:9090)
+- **Grafana** on http://localhost:3000 (default login: admin/admin)
+
+**Note**: You still need to run the OpCon MCP Server metrics endpoint on the host machine (localhost:9090) for Prometheus to scrape.
+
+After starting, configure Grafana:
+1. Add Prometheus data source with URL: `http://prometheus:9090`
+2. Import the dashboard from `grafana/dashboard.json`
 
 ## Production Considerations
 
