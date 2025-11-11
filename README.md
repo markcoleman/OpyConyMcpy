@@ -2,6 +2,14 @@
 
 A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server for interacting with the SMA OpCon REST API. This server enables AI agents and applications to interact with OpCon automation platform through a standardized protocol.
 
+## 📚 Documentation
+
+**[View Full Documentation](https://markcoleman.github.io/OpyConyMcpy/)** - Complete guide including:
+- [Tool Reference](https://markcoleman.github.io/OpyConyMcpy/TOOL_REFERENCE.html) - All 257 available tools with detailed parameters
+- [Configuration Guide](https://markcoleman.github.io/OpyConyMcpy/CONFIGURATION.html) - Environment setup
+- [Integration Guide](https://markcoleman.github.io/OpyConyMcpy/INTEGRATION.html) - MCP client integration
+- [Examples](https://markcoleman.github.io/OpyConyMcpy/EXAMPLES.html) - Usage examples
+
 ## Features
 
 - ✅ **Complete API Coverage**: Automatically generates MCP tools from OpenAPI specification
@@ -72,12 +80,19 @@ Configure your MCP client (e.g., Claude Desktop, MCP Inspector) to use this serv
 
 ### Available Tools
 
-The server automatically generates MCP tools from the OpCon OpenAPI specification. Each API endpoint becomes a callable tool. Examples include:
+The server automatically generates MCP tools from the OpCon OpenAPI specification. Each API endpoint becomes a callable tool. 
 
-- `getApiAccesscodes` - Get access codes
-- `getApiMasterSchedules` - Get master schedules
-- `postApiDailyjobs` - Create daily jobs
-- And many more (155+ endpoints)
+**257 tools across 65 categories** including:
+
+- **DailyJobs** (40 tools) - Monitor and manage daily job execution
+- **DailySchedules** (11 tools) - Daily schedule operations
+- **Machines** (10 tools) - Machine configuration and monitoring
+- **Calendars** (8 tools) - Calendar management
+- **AccessCodes** (5 tools) - Access code management
+- **Resources** (5 tools) - Resource management
+- **And 59 more categories...**
+
+For a complete list, see the [Tool Reference](https://markcoleman.github.io/OpyConyMcpy/TOOL_REFERENCE.html).
 
 ## Development
 
