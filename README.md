@@ -20,6 +20,7 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server for int
 - ✅ **CI/CD**: GitHub Actions workflows for testing, linting, and security
 - ✅ **Development Tools**: DevContainer and VSCode integration
 - ✅ **Best Practices**: ESLint, Prettier, and security scanning
+- ✅ **Grafana Support**: Prometheus metrics for monitoring and observability
 
 ## Prerequisites
 
@@ -44,6 +45,8 @@ The server is configured via environment variables:
 | `OPCON_USERNAME` | No* | Username for authentication |
 | `OPCON_PASSWORD` | No* | Password for authentication |
 | `OPCON_VERIFY_TLS` | No | Set to `false` to disable TLS verification (default: `true`) |
+| `OPCON_METRICS_ENABLED` | No | Set to `true` to enable Prometheus metrics (default: `false`) |
+| `OPCON_METRICS_PORT` | No | Port for metrics HTTP server (default: `9090`) |
 
 *Either `OPCON_TOKEN` or both `OPCON_USERNAME` and `OPCON_PASSWORD` are required.
 
@@ -141,6 +144,45 @@ npm run format
 ```bash
 npm run build
 ```
+
+## Monitoring with Grafana
+
+The OpCon MCP Server supports Prometheus metrics that can be visualized in Grafana.
+
+### Quick Start
+
+1. Enable metrics collection:
+
+```bash
+export OPCON_METRICS_ENABLED=true
+```
+
+2. Start the metrics HTTP server:
+
+```bash
+# Development mode
+npm run dev:metrics
+
+# Production mode (after building)
+node dist/metrics-server.js
+```
+
+3. Access metrics at `http://localhost:9090/metrics`
+
+### Available Metrics
+
+- **Request counts**: Total MCP tool requests by tool and method
+- **Error rates**: Errors by tool, method, and error type
+- **Request duration**: Latency histograms with p95, p99 percentiles
+- **Tools available**: Number of registered MCP tools
+
+### Setup Grafana Dashboard
+
+1. Set up Prometheus to scrape the metrics endpoint
+2. Import the dashboard from `grafana/dashboard.json`
+3. Configure your Prometheus data source in Grafana
+
+For detailed instructions, see [grafana/README.md](grafana/README.md).
 
 ## DevContainer Support
 

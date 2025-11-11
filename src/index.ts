@@ -18,6 +18,7 @@ import {
   extractQueryParams,
 } from './parser.js';
 import { OpConConfig, ApiEndpoint } from './types.js';
+import { MetricsCollector } from './metrics.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,11 +31,18 @@ export class OpConMcpServer {
   private client: OpConClient;
   private endpoints: ApiEndpoint[];
   private tools: Tool[];
+  private metrics?: MetricsCollector;
 
-  constructor(config: OpConConfig, swaggerPath: string) {
+  constructor(config: OpConConfig, swaggerPath: string, enableMetrics = false) {
     this.client = new OpConClient(config);
     this.endpoints = parseOpenApiSpec(swaggerPath);
     this.tools = this.endpoints.map((endpoint) => generateToolFromEndpoint(endpoint));
+
+    // Initialize metrics if enabled
+    if (enableMetrics) {
+      this.metrics = new MetricsCollector();
+      this.metrics.setToolsAvailable(this.tools.length);
+    }
 
     this.server = new Server(
       {
@@ -66,6 +74,7 @@ export class OpConMcpServer {
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const toolName = request.params.name;
       const args = request.params.arguments || {};
+      const startTime = Date.now();
 
       // Find the endpoint for this tool
       const endpoint = this.endpoints.find((e) => {
@@ -92,6 +101,13 @@ export class OpConMcpServer {
           params: queryParams,
         });
 
+        // Record metrics
+        if (this.metrics) {
+          const duration = (Date.now() - startTime) / 1000;
+          this.metrics.recordRequest(toolName, endpoint.method);
+          this.metrics.recordDuration(toolName, endpoint.method, duration);
+        }
+
         return {
           content: [
             {
@@ -101,6 +117,12 @@ export class OpConMcpServer {
           ],
         };
       } catch (error) {
+        // Record error metrics
+        if (this.metrics) {
+          const errorType = error instanceof Error ? error.constructor.name : 'UnknownError';
+          this.metrics.recordError(toolName, endpoint.method, errorType);
+        }
+
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         return {
           content: [
@@ -122,6 +144,16 @@ export class OpConMcpServer {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
     console.error('OpCon MCP Server running on stdio');
+  }
+
+  /**
+   * Get metrics in Prometheus format
+   */
+  async getMetrics(): Promise<string | null> {
+    if (!this.metrics) {
+      return null;
+    }
+    return this.metrics.getMetrics();
   }
 }
 
@@ -151,7 +183,10 @@ async function main() {
   // Find swagger.json - look in parent directory when running from dist
   const swaggerPath = join(__dirname, '..', 'swagger.json');
 
-  const server = new OpConMcpServer(config, swaggerPath);
+  // Enable metrics if OPCON_METRICS_ENABLED is set to 'true'
+  const enableMetrics = process.env.OPCON_METRICS_ENABLED === 'true';
+
+  const server = new OpConMcpServer(config, swaggerPath, enableMetrics);
   await server.start();
 }
 

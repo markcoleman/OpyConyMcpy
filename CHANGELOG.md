@@ -76,6 +76,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Grafana/Prometheus monitoring support
+  - Metrics collection for request counts, error rates, and latency
+  - HTTP metrics server for exposing Prometheus-compatible metrics
+  - Example Grafana dashboard with key performance indicators
+  - Prometheus configuration example
+  - Comprehensive documentation in grafana/README.md
+- New environment variables: OPCON_METRICS_ENABLED and OPCON_METRICS_PORT
+- MetricsCollector class for tracking MCP server performance
+- Metrics endpoint at /metrics (port 9090 by default)
+- Health check endpoint at /health
+- 13 new unit tests for metrics functionality
+- npm script: dev:metrics for running the metrics server
+
 ### Planned
 - Additional example scripts
 - Performance optimizations
@@ -85,7 +99,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Batch operation support
 - Rate limiting configuration
 - Caching for frequently accessed data
-- Metrics and monitoring support
 
 ---
 
