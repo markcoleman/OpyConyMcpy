@@ -84,7 +84,7 @@ export function generateInputSchema(endpoint: ApiEndpoint) {
   // Add query/header parameters from spec
   endpoint.parameters?.forEach((param) => {
     if (param.in === 'query' || param.in === 'header') {
-      const propSchema: Record<string, unknown> = {
+      const propSchema: Record<string, string | object> = {
         type: param.schema?.type || 'string',
         description: param.description || `${param.in} parameter: ${param.name}`,
       };
