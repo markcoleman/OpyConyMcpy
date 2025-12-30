@@ -65,7 +65,7 @@ export function generateToolName(endpoint: ApiEndpoint): string {
  * Generate JSON Schema for tool input from endpoint parameters
  */
 export function generateInputSchema(endpoint: ApiEndpoint) {
-  const properties: Record<string, unknown> = {};
+  const properties: Record<string, object> = {};
   const required: string[] = [];
 
   // Add path parameters
