@@ -65,7 +65,7 @@ export function generateToolName(endpoint: ApiEndpoint): string {
  * Generate JSON Schema for tool input from endpoint parameters
  */
 export function generateInputSchema(endpoint: ApiEndpoint) {
-  const properties: Record<string, unknown> = {};
+  const properties: Record<string, object> = {};
   const required: string[] = [];
 
   // Add path parameters
@@ -84,7 +84,7 @@ export function generateInputSchema(endpoint: ApiEndpoint) {
   // Add query/header parameters from spec
   endpoint.parameters?.forEach((param) => {
     if (param.in === 'query' || param.in === 'header') {
-      const propSchema: Record<string, unknown> = {
+      const propSchema: Record<string, string | object> = {
         type: param.schema?.type || 'string',
         description: param.description || `${param.in} parameter: ${param.name}`,
       };
